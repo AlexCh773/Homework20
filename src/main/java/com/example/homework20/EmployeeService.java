@@ -3,7 +3,6 @@ package com.example.homework20;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -13,7 +12,7 @@ public class EmployeeService {
         departmentNumbers.sort(Integer::compareTo);
     }
 
-    public Map<String, Employee> employees = new HashMap<>();
+    public static Map<String, Employee> employees = new HashMap<>();
 
     {
         employees.put("1423", new Employee(1423, "Ivan", "Petrovich", "Sidorov", 3, 110000));
@@ -49,35 +48,4 @@ public class EmployeeService {
         }
         return employee;
     }
-
-    public List<Employee> getListDepartmentEmployees(int departmentId) {
-        if (!EmployeeService.departmentNumbers.contains(departmentId)) {
-            throw new EmployeeBadParameters("неверно указан отдел!");
-        }
-        List<Employee> employeeList = new ArrayList<>(employees.values());
-        return employeeList.stream().filter(e -> e.getDepartmentId() == departmentId).collect(Collectors.toList());
-    }
-
-    public Employee getEmployeeWithMaxSalaryInDepartment(int departmentId) {
-        if (!EmployeeService.departmentNumbers.contains(departmentId)) {
-            throw new EmployeeBadParameters("неверно указан отдел!");
-        }
-        List<Employee> employeeList = new ArrayList<>(employees.values());
-        Optional<Employee> result = employeeList.stream().filter(employee -> employee.getDepartmentId() == departmentId)
-                .max(Comparator.comparingDouble(Employee::getSalary));
-        result.orElseThrow(() -> new EmployeeNotFoundException("искомый сотрудник не найден"));
-        return result.get();
-    }
-
-    public Employee getEmployeeWithMinSalaryInDepartment(int departmentId) {
-        if (!EmployeeService.departmentNumbers.contains(departmentId)) {
-            throw new EmployeeBadParameters("неверно указан отдел!");
-        }
-        List<Employee> employeeList = new ArrayList<>(employees.values());
-        Optional<Employee> result = employeeList.stream().filter(employee -> employee.getDepartmentId() == departmentId)
-                .min(Comparator.comparingDouble(Employee::getSalary));
-        result.orElseThrow(() -> new EmployeeNotFoundException("искомый сотрудник не найден"));
-        return result.get();
-    }
-
 }
