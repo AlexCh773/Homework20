@@ -23,7 +23,7 @@ public class EmployeeController {
                               Integer departmentNumber,
                               Integer salary) {
         try {
-            checkParameters(passportNumber, firstName, middleName, lastName, departmentNumber, salary);
+            checkParametersForNull(passportNumber, firstName, middleName, lastName, departmentNumber, salary);
             return "сотрудник успешно добален: " + employeeService.addEmployee(passportNumber, firstName, middleName, lastName, departmentNumber, salary);
         } catch (EmployeeBadParameters | EmployeeAlreadyAddedException e) {
             return e.getMessage();
@@ -59,11 +59,64 @@ public class EmployeeController {
         return employeeService.employees;
     }
 
-    public void checkParameters(Object... params) {
+    public void checkParametersForNull(Object... params) {
         for (Object param : params) {
             if (param == null) {
                 throw new EmployeeBadParameters("неверно заданы параметры!");
             }
         }
+    }
+
+    @GetMapping("/departments/max-salary")
+    public Object getEmployeeWithMaxSalaryInDepartment(@RequestParam(required = false) Integer departmentId) {
+        if (departmentId == null) {
+            return "не задан номер отдела!";
+        }
+        Object result;
+        try {
+            result = employeeService.getEmployeeWithMaxSalaryInDepartment(departmentId);
+        } catch (EmployeeNotFoundException | EmployeeBadParameters e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+
+    @GetMapping("/departments/min-salary")
+    public Object getEmployeeWithMinSalaryInDepartment(@RequestParam(required = false) Integer departmentId) {
+        if (departmentId == null) {
+            return "не задан номер отдела!";
+        }
+        Object result;
+        try {
+            result = employeeService.getEmployeeWithMinSalaryInDepartment(departmentId);
+        } catch (EmployeeNotFoundException | EmployeeBadParameters e) {
+            result = e.getMessage();
+        }
+        return result;
+    }
+
+    @GetMapping(path = "/departments/all", params = "departmentId")
+    public Object getListDepartmentEmployees(@RequestParam(required = false) Integer departmentId) {
+        if (departmentId == null) {
+            return "не задан номер отдела!";
+        }
+        Object result;
+        try {
+            result = employeeService.getListDepartmentEmployees(departmentId);
+        } catch (EmployeeBadParameters e) {
+            result = e.getMessage();
+        }
+        System.out.println(result);
+        return result;
+    }
+
+    @GetMapping("/departments/all")
+    public StringBuilder getListEmployeesSortedByDepartments() {
+        StringBuilder result = new StringBuilder("");
+        for (Integer departmentId : EmployeeService.departmentNumbers) {
+            result.append("отдел №").append(departmentId).append(":");
+            result.append(employeeService.getListDepartmentEmployees(departmentId)).append("<br>");
+        }
+        return result;
     }
 }
