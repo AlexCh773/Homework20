@@ -1,8 +1,9 @@
 package com.example.homework20;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus()
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class EmployeeBadParameters extends RuntimeException {
     public EmployeeBadParameters() {
     }
