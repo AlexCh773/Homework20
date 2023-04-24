@@ -7,7 +7,7 @@ public class Employee {
     final private int ID;
     final private int passportNumber;
     private String firstName, middleName, lastName;
-    private int departmentNumber;
+    private int departmentId;
     private int salary;
 
     @Override
@@ -24,14 +24,14 @@ public class Employee {
         return Objects.hash(getPassportNumber(), getFirstName(), getMiddleName(), getLastName());
     }
 
-    public Employee(int passportNumber, String firstName, String middleName, String lastName, int departmentNumber, int salary) {
+    public Employee(int passportNumber, String firstName, String middleName, String lastName, int departmentId, int salary) {
         if (passportNumber < 1) {
             throw new EmployeeBadParameters("неверно указаны номер паспорта сотрудника!");
         }
         if ("".equals(firstName.trim()) || "".equals(lastName.trim()) || "".equals(middleName.trim())) {
             throw new EmployeeBadParameters("неверно указаны фамилия имя отчество сотрудника!");
         }
-        if (!EmployeeService.DepartmentNumbers.contains(departmentNumber)) {
+        if (!EmployeeService.departmentNumbers.contains(departmentId)) {
             throw new EmployeeBadParameters("неверно указан отдел!");
         }
         if (salary < 1) {
@@ -41,7 +41,7 @@ public class Employee {
         this.firstName = firstName.trim();
         this.middleName = middleName.trim();
         this.lastName = lastName.trim();
-        this.departmentNumber = departmentNumber;
+        this.departmentId = departmentId;
         this.salary = salary;
         this.ID = nextId;
     }
@@ -66,8 +66,8 @@ public class Employee {
         return lastName;
     }
 
-    public int getDepartmentNumber() {
-        return departmentNumber;
+    public int getDepartmentId() {
+        return departmentId;
     }
 
     public int getSalary() {
@@ -88,11 +88,11 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public void setDepartmentNumber(int departmentNumber) {
-        if (!EmployeeService.DepartmentNumbers.contains(departmentNumber)) {
+    public void setDepartmentId(int departmentId) {
+        if (!EmployeeService.departmentNumbers.contains(departmentId)) {
             throw new EmployeeBadParameters("неверно указан отдел!");
         }
-        this.departmentNumber = departmentNumber;
+        this.departmentId = departmentId;
     }
 
     public void setSalary(int salary) {
@@ -109,7 +109,7 @@ public class Employee {
                 firstName + " " +
                 middleName + " " +
                 ", табельный номер " + ID +
-                ", отдел №" + departmentNumber +
+                ", отдел №" + departmentId +
                 ", оклад " + salary + " руб.";
     }
 }

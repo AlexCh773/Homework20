@@ -23,7 +23,7 @@ public class EmployeeController {
                               Integer departmentNumber,
                               Integer salary) {
         try {
-            checkParameters(passportNumber, firstName, middleName, lastName, departmentNumber, salary);
+            checkParametersForNull(passportNumber, firstName, middleName, lastName, departmentNumber, salary);
             return "сотрудник успешно добален: " + employeeService.addEmployee(passportNumber, firstName, middleName, lastName, departmentNumber, salary);
         } catch (EmployeeBadParameters | EmployeeAlreadyAddedException e) {
             return e.getMessage();
@@ -56,10 +56,10 @@ public class EmployeeController {
 
     @GetMapping("/listEmployees")
     public Object getListEmployees() {
-        return employeeService.employees;
+        return EmployeeService.employees;
     }
 
-    public void checkParameters(Object... params) {
+    public void checkParametersForNull(Object... params) {
         for (Object param : params) {
             if (param == null) {
                 throw new EmployeeBadParameters("неверно заданы параметры!");
