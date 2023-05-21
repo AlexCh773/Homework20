@@ -1,5 +1,7 @@
 package com.example.homework20;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Objects;
 
 public class Employee {
@@ -38,9 +40,9 @@ public class Employee {
             throw new EmployeeBadParameters("неверно указан размер заработной платы!");
         }
         this.passportNumber = passportNumber;
-        this.firstName = firstName.trim();
-        this.middleName = middleName.trim();
-        this.lastName = lastName.trim();
+        this.firstName = StringUtils.capitalize(firstName.trim().toLowerCase());
+        this.middleName = StringUtils.capitalize(middleName.trim().toLowerCase());
+        this.lastName = StringUtils.capitalize(lastName.trim().toLowerCase());
         this.departmentId = departmentId;
         this.salary = salary;
         this.ID = nextId;
@@ -78,14 +80,14 @@ public class Employee {
         if ("".equals(firstName.trim())) {
             throw new EmployeeBadParameters("неверно указано имя сотрудника!");
         }
-        this.firstName = firstName;
+        this.firstName = StringUtils.capitalize(firstName.trim().toLowerCase());
     }
 
     public void setLastName(String lastName) {
         if ("".equals(lastName.trim())) {
             throw new EmployeeBadParameters("неверно указана фамилия сотрудника!");
         }
-        this.lastName = lastName;
+        this.lastName = StringUtils.capitalize(lastName.trim().toLowerCase());
     }
 
     public void setDepartmentId(int departmentId) {

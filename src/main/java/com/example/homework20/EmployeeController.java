@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import  org.apache.commons.lang3.StringUtils;
 
 @RestController
 @RequestMapping("/employee")
@@ -24,8 +25,9 @@ public class EmployeeController {
                               Integer salary) {
         try {
             checkParametersForNull(passportNumber, firstName, middleName, lastName, departmentNumber, salary);
+            checkNameForValidity(firstName, middleName, lastName);
             return "сотрудник успешно добален: " + employeeService.addEmployee(passportNumber, firstName, middleName, lastName, departmentNumber, salary);
-        } catch (EmployeeBadParameters | EmployeeAlreadyAddedException e) {
+        } catch (EmployeeAlreadyAddedException e) {
             return e.getMessage();
         }
     }
@@ -55,14 +57,22 @@ public class EmployeeController {
     }
 
     @GetMapping("/listEmployees")
-    public Object getListEmployees() {
+    private Object getListEmployees() {
         return EmployeeService.employees;
     }
 
     public void checkParametersForNull(Object... params) {
         for (Object param : params) {
             if (param == null) {
-                throw new EmployeeBadParameters("неверно заданы параметры!");
+                throw new EmployeeBadParameters();
+            }
+        }
+    }
+
+    private void checkNameForValidity(String... strings) {
+        for (String string : strings) {
+            if (!StringUtils.isAlpha(string)) {
+                throw new EmployeeBadParameters();
             }
         }
     }
