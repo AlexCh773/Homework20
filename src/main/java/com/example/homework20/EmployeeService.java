@@ -14,15 +14,6 @@ public class EmployeeService {
 
     public static Map<String, Employee> employees = new HashMap<>();
 
-    {
-        employees.put("1423", new Employee(1423, "Ivan", "Petrovich", "Sidorov", 3, 110000));
-        employees.put("2521", new Employee(2521, "Petr", "Ivanovich", "Petrov", 1, 100000));
-        employees.put("8452", new Employee(8452, "Ignat", "Andreevich", "Ivanov", 2, 120000));
-        employees.put("1923", new Employee(1923, "Pavel", "Petrovich", "Krutov", 1, 160000));
-        employees.put("1597", new Employee(1597, "Ivan", "Vladimirovich", "Tugov", 4, 115000));
-        employees.put("3286", new Employee(3286, "Nikolay", "Andreevich", "Teplov", 4, 110000));
-    }
-
     public Employee addEmployee(int passportNumber, String firstName, String middleName, String lastName, int departmentId, int salary) {
         Employee employee = new Employee(passportNumber, firstName, middleName, lastName, departmentId, salary);
         if (employees.containsValue(employee)) {
@@ -47,5 +38,9 @@ public class EmployeeService {
             throw new EmployeeNotFoundException("искомый сотрудник не найден");
         }
         return employee;
+    }
+
+    public Collection<Employee> getAll() {
+        return employees.values();
     }
 }
